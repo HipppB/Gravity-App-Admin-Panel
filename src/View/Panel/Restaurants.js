@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 
 import Table from "@mui/material/Table";
@@ -359,6 +359,9 @@ function CreateRestaurantDialog({ isOpen, setIsOpen }) {
 
 function EditRestaurantDialog({ isOpen, setIsOpen, restaurant }) {
   const [image, setImage] = useState(restaurant?.imageUri);
+  useEffect(() => {
+    setImage(restaurant?.imageUri);
+  }, [restaurant]);
 
   const onImageChange = (files) => {
     if (files && files[0]) {

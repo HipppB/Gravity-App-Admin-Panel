@@ -59,23 +59,31 @@ function Home() {
           aria-label="basic tabs example"
           variant="fullWidth"
         >
-          <Tab label="Histoire" {...a11yProps(0)} />
-          <Tab label="Son et Film" {...a11yProps(1)} />
-          <Tab label="Projet Péda" {...a11yProps(2)} />
-          <Tab label="Utilisateurs" {...a11yProps(3)} />
+          <Tab label="Messagerie" {...a11yProps(0)} />
+          <Tab label="Histoire" {...a11yProps(1)} />
+          <Tab label="Son et Film" {...a11yProps(2)} />
+          <Tab label="Projet Péda" {...a11yProps(3)} />
+          <Tab label="Utilisateurs" {...a11yProps(4)} />
+          <Tab label="Notifications" {...a11yProps(5)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Histoire />
+        En cours de création
       </TabPanel>
       <TabPanel value={value} index={1}>
-        En cours de création.
+        <Histoire />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        En cours de création..
+        En cours de création.
       </TabPanel>
       <TabPanel value={value} index={3}>
+        En cours de création..
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         En cours de création...
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        En cours de création....
       </TabPanel>
     </Box>
   );
