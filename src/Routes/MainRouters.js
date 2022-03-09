@@ -1,5 +1,4 @@
 import React from "react";
-import { render } from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../View/Login/Login";
 import { useAuthentification } from "../Context/AuthContext";
@@ -13,32 +12,34 @@ function MainRouters(props) {
   const { isAuthentificated } = useAuthentification();
   return (
     <BrowserRouter>
-      <Routes>
-        {!isAuthentificated ? (
+      {!isAuthentificated ? (
+        <Routes>
           <Route path="/*" element={<Login />} />
-        ) : (
-          <>
-            <Route path="/" element={<Layout />}>
-              {/* <Route path=":teamId" element={<Team />} />
-            <Route path="new" element={<NewTeamForm />} />
-            <Route index element={<LeagueStandings />} /> */}
 
-              <Route index element={<Home />} />
-              <Route path="/Restaurants" element={<Restaurants />} />
-              <Route path="/Calendar" element={<Calendar />} />
-              <Route path="/Sponsors" element={<Sponsors />} />
-              <Route path="/Events" element={<Events />} />
-            </Route>
-          </>
-        )}
-        {/* <Route index element={<Home />} />
+          {/* <Route index element={<Home />} />
            <Route path="teams" element={<Teams />}>
              <Route path=":teamId" element={<Team />} />
              <Route path="new" element={<NewTeamForm />} />
              <Route index element={<LeagueStandings />} />
            </Route>
          </Route> */}
-      </Routes>
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/*" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="Restaurants" element={<Restaurants />} />
+          </Route>
+
+          {/* <Route path="/*" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/Calendar" element={<Calendar />} />
+            <Route path="/Sponsors" element={<Sponsors />} />
+            <Route path="/Events" element={<Events />} />
+          </Route>
+          <Route path="/Restaurants" element={<Restaurants />} /> */}
+        </Routes>
+      )}
     </BrowserRouter>
   );
 }

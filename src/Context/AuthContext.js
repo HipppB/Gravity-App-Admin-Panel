@@ -15,6 +15,7 @@ function AuthProvider({ children }) {
 
   async function login(userInfos) {
     setisAuthentificated(true);
+    setApiToken();
   }
 
   const logout = (cb) => {

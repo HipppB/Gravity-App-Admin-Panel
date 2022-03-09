@@ -1,6 +1,12 @@
-.HistoireContainer {
+.HistoiresContainer {
   flex-wrap: wrap;
   align-items: center;
   display: flex;
   justify-content: space-around;
+  max-width: 1500px;
+}
+.HistoireContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

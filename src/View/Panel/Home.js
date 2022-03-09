@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
-import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Box from "@mui/material/Box";
 import { Outlet } from "react-router";
 import DoneIcon from "@mui/icons-material/Done";
+import Histoire from "./Home/Histoire";
 import "./styleHome.css";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,8 +42,9 @@ function a11yProps(index) {
   };
 }
 
-export default function Home() {
-  const [value, setValue] = React.useState(0);
+function Home() {
+  console.error("Hey");
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -60,56 +60,25 @@ export default function Home() {
           variant="fullWidth"
         >
           <Tab label="Histoire" {...a11yProps(0)} />
-          <Tab label="Son et Projet peda" {...a11yProps(1)} />
-          <Tab label="Utilisateurs" {...a11yProps(2)} />
+          <Tab label="Son et Film" {...a11yProps(1)} />
+          <Tab label="Projet Péda" {...a11yProps(2)} />
+          <Tab label="Utilisateurs" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <div className="HistoireContainer">
-          <Box>
-            <TextareaAutosize
-              aria-label="history textarea"
-              placeholder="Histoire de Liste Fr"
-              style={{
-                width: 500,
-                maxWidth: "80%",
-                height: 400,
-                marginBottom: 30,
-              }}
-            />
-            <Button
-              variant="text"
-              onClick={() => console.log("Save")}
-              endIcon={DoneIcon}
-            >
-              Sauvegarder
-            </Button>
-          </Box>
-          <TextareaAutosize
-            aria-label="history textarea"
-            placeholder="Histoire de Lise En"
-            style={{
-              width: 500,
-              maxWidth: "80%",
-              height: 400,
-              marginBottom: 30,
-            }}
-          />
-          <Button
-            variant="text"
-            onClick={() => console.log("Save")}
-            endIcon={DoneIcon}
-          >
-            Sauvegarder
-          </Button>
-        </div>
+        <Histoire />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        En cours de création.
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        En cours de création..
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        En cours de création...
       </TabPanel>
     </Box>
   );
 }
+
+export default Home;
