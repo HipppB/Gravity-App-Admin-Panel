@@ -49,49 +49,55 @@ function Events(props) {
     },
   ];
   return (
-    <div>
-      <h2>Activez et desactivez les events de l'app</h2>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center">
-                Nom{" "}
-                <IconButton
-                  size={"small"}
-                  onClick={() => {
-                    setActiveLang(activeLang === "fr" ? "en" : "fr");
-                  }}
-                >
-                  <SvgIcon component={LanguageIcon} />
-                </IconButton>
-              </TableCell>
+    <>
+      <h3>Activez et desactivez les events de l'app</h3>
+      <div>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center"></TableCell>
+                <TableCell align="center">
+                  Nom{" "}
+                  <IconButton
+                    size={"small"}
+                    onClick={() => {
+                      setActiveLang(activeLang === "fr" ? "en" : "fr");
+                    }}
+                  >
+                    <SvgIcon component={LanguageIcon} />
+                  </IconButton>
+                </TableCell>
 
-              <TableCell align="center">
-                Description{" "}
-                <IconButton
-                  size={"small"}
-                  onClick={() => {
-                    setActiveLang(activeLang === "fr" ? "en" : "fr");
-                  }}
-                >
-                  <SvgIcon component={LanguageIcon} />
-                </IconButton>
-              </TableCell>
+                <TableCell align="center">
+                  Description{" "}
+                  <IconButton
+                    size={"small"}
+                    onClick={() => {
+                      setActiveLang(activeLang === "fr" ? "en" : "fr");
+                    }}
+                  >
+                    <SvgIcon component={LanguageIcon} />
+                  </IconButton>
+                </TableCell>
 
-              <TableCell align="center">Changer de statut</TableCell>
-              <TableCell align="center">Modifier</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {eventList.map((event) => (
-              <EventLine key={event.id} event={event} activeLang={activeLang} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+                <TableCell align="center">Changer de statut</TableCell>
+                <TableCell align="center">Modifier</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {eventList.map((event) => (
+                <EventLine
+                  key={event.id}
+                  event={event}
+                  activeLang={activeLang}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </>
   );
 }
 

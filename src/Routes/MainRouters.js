@@ -30,6 +30,7 @@ function MainRouters(props) {
             <Route index element={<Home />} />
             <Route path="Restaurants" element={<Restaurants />} />
             <Route path="Events" element={<Events />} />
+            <Route path="Calendar" element={<Calendar />} />
           </Route>
 
           {/* <Route path="/*" element={<Layout />}>
