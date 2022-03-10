@@ -8,7 +8,9 @@ import Box from "@mui/material/Box";
 import { Outlet } from "react-router";
 import DoneIcon from "@mui/icons-material/Done";
 import Histoire from "./Home/Histoire";
+import Users from "./Home/Users";
 import "./styleHome.css";
+import Downloadables from "./Home/Downloadables";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,10 +63,10 @@ function Home() {
         >
           <Tab label="Messagerie" {...a11yProps(0)} />
           <Tab label="Histoire" {...a11yProps(1)} />
-          <Tab label="Son et Film" {...a11yProps(2)} />
-          <Tab label="Projet Péda" {...a11yProps(3)} />
-          <Tab label="Utilisateurs" {...a11yProps(4)} />
-          <Tab label="Notifications" {...a11yProps(5)} />
+          <Tab label="Projet Péda, Son et Film" {...a11yProps(2)} />
+
+          <Tab label="Utilisateurs" {...a11yProps(3)} />
+          <Tab label="Notifications" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -73,16 +75,14 @@ function Home() {
       <TabPanel value={value} index={1}>
         <Histoire />
       </TabPanel>
+
       <TabPanel value={value} index={2}>
-        En cours de création.
+        <Downloadables />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        En cours de création..
+        <Users />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        En cours de création...
-      </TabPanel>
-      <TabPanel value={value} index={5}>
         En cours de création....
       </TabPanel>
     </Box>

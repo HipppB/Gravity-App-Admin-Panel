@@ -31,6 +31,7 @@ function MainRouters(props) {
             <Route path="Restaurants" element={<Restaurants />} />
             <Route path="Events" element={<Events />} />
             <Route path="Calendar" element={<Calendar />} />
+            <Route path="Sponsors" element={<Sponsors />} />
           </Route>
 
           {/* <Route path="/*" element={<Layout />}>

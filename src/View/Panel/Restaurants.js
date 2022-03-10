@@ -170,10 +170,7 @@ function BasicTable({ modifyCallBack }) {
         </TableHead>
         <TableBody>
           {restaurantsData.map((restaurant) => (
-            <TableRow
-              key={restaurant.id}
-              // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={restaurant.id}>
               <TableCell>
                 <Avatar alt="Image" src={restaurant.imageUri} />
               </TableCell>
@@ -330,21 +327,6 @@ function CreateRestaurantDialog({ isOpen, setIsOpen }) {
               {image ? "Change Image" : "Select an image"}
             </Button>
           </label>
-          {/* <label htmlFor="icon-button-file">
-            <Input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              onChange={(e) => console.log(e.target.files)}
-            />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <PhotoCamera />
-            </IconButton>
-          </label> */}
         </Stack>
       </DialogContent>
       <DialogActions>
