@@ -42,7 +42,7 @@ function Layout(props) {
           startIcon={<PaidIcon />}
           onClick={() => navigate("/Sponsors")}
         >
-          Sponsors
+          40k Ou rien
         </Button>
         <Button
           variant="text"
