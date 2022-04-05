@@ -47,9 +47,9 @@ function Layout(props) {
         <Button
           variant="text"
           startIcon={<EmojiEventsIcon />}
-          onClick={() => navigate("/Events")}
+          onClick={() => navigate("/Challenges")}
         >
-          Events
+          Challenges
         </Button>
       </div>
       <Outlet />

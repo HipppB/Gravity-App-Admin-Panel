@@ -29,6 +29,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import getImagePath from "../../data/getImagePath";
+import getImageBlobUrl from "../../data/getImageBlobUrl";
 const Input = styled("input")({
   display: "none",
 });
@@ -50,9 +51,9 @@ function Sponsors(props) {
   const [sponsorsData, setSponsorsData] = useState([]);
 
   useEffect(() => {
-    if(!isOpen && !isEditOpen) {
-    fetchAllSponsors("sponsor/all", "GET", {}, apiToken);
-  }
+    if (!isOpen && !isEditOpen) {
+      fetchAllSponsors("sponsor/all", "GET", {}, apiToken);
+    }
   }, [isEditOpen, isOpen]);
   useEffect(() => {
     if (allSponsors && !loadingSponsors) {
@@ -89,7 +90,7 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            {/* <TableCell>Image</TableCell> */}
+            <TableCell>Image</TableCell>
             <TableCell>Sponsors</TableCell>
 
             <TableCell align="center">
@@ -103,6 +104,7 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
+            <TableCell>Lien</TableCell>
 
             <TableCell align="right">Actions</TableCell>
           </TableRow>
@@ -110,12 +112,14 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
         <TableBody>
           {sponsorsData.map((sponsor) => {
             console.log(sponsor);
-            
+
             return (
               <TableRow key={sponsor.id}>
-                {/* <TableCell>
-                  <Avatar alt="Image" src={sponsor.imageUri} />
-                </TableCell> */}
+                <TableCell>
+                  {/* <Avatar alt="Image" src={sponsor.imageUri} />
+                   */}
+                  <ImageIcon imgUri={sponsor.picture} />
+                </TableCell>
 
                 <TableCell component="th" scope="row">
                   {sponsor.name}
@@ -126,7 +130,7 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
                     {sponsor.translation[0].description}
                   </div>
                 </TableCell>
-
+                <TableCell>{sponsor.link}</TableCell>
                 <TableCell align="right">
                   <IconButton
                     onClick={() => {
@@ -145,65 +149,73 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
   );
 }
 
+function ImageIcon({ imgUri }) {
+  const [img, setimg] = useState();
+  const { apiToken } = useAuthentification();
+  useEffect(() => getImageBlobUrl(imgUri, apiToken, setimg), []);
+  return <Avatar alt="Image" src={img} />;
+}
 function CreateSponsorDialog({ isOpen, setIsOpen }) {
   const [image, setImage] = useState();
-  const [imageFile, setImageFile] = useState()
-  const {apiToken} = useAuthentification()
-  const {newRequest} = useFetch()
+  const [imageFile, setImageFile] = useState();
+  const { apiToken } = useAuthentification();
+  const { newRequest } = useFetch();
 
-
-  const [name, setName] = useState("")
-  const [link, setLink] = useState("")
-  const [picture, setPicture] = useState("")
-  const [descFr, setDescFr] = useState("")
-  const [descEn, setDescEn] = useState("")
-  const [subFr, setSubFr] = useState("")
-  const [subEn, setSubEn] = useState("")
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
+  const [picture, setPicture] = useState("");
+  const [descFr, setDescFr] = useState("");
+  const [descEn, setDescEn] = useState("");
+  const [subFr, setSubFr] = useState("");
+  const [subEn, setSubEn] = useState("");
   async function createSponsor() {
-    if(imageFile) {
-      getImagePath(imageFile, apiToken).then((imageUri) =>requestCreation(imageUri.filename) )
-
+    if (imageFile) {
+      getImagePath(imageFile, apiToken).then((imageUri) =>
+        requestCreation(imageUri.filename)
+      );
+    } else {
+      requestCreation("");
     }
-    else {
-      requestCreation("")
-    }
-    
   }
   function requestCreation(filename) {
-    newRequest("sponsor/create", "POST", {
-      "type": "classic",
-      "name": name,
-      "link": link,
-      "picture": filename,
-      "longitude": 0,
-      "latitude": 0,
-      "translation": [
-        {
-          "language": "fr",
-          "isDefault": true,
-          "description": descFr,
-          "context_text": subFr  + "\n"
-        },
-        {
-          "language": "en",
-          "isDefault": true,
-          "description": descEn,
-          "context_text": subEn  + "\n"
-    
-        }
-      ]
-    },apiToken)
-    setIsOpen(false)
-    setImage()
-    setImageFile()
-
+    newRequest(
+      "sponsor/create",
+      "POST",
+      {
+        type: "classic",
+        name: name,
+        link: link,
+        picture: filename,
+        longitude: 0,
+        latitude: 0,
+        translation: [
+          {
+            language: "fr",
+            isDefault: true,
+            description: descFr,
+            context_text: subFr + "\n",
+          },
+          {
+            language: "en",
+            isDefault: true,
+            description: descEn,
+            context_text: subEn + "\n",
+          },
+        ],
+      },
+      apiToken
+    );
+    setIsOpen(false);
+    setImage();
+    setImageFile();
   }
   const onImageChange = (files) => {
     if (files && files[0]) {
-      setImageFile(files[0])
+      setImageFile(files[0]);
       setImage(URL.createObjectURL(files[0]));
     }
   };
+
   return (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTitle>Ajout d'un sponsor</DialogTitle>
@@ -222,7 +234,7 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-         <TextField
+        <TextField
           margin="dense"
           id="adress"
           label="Sous titre fr"
@@ -262,7 +274,7 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           value={descEn}
           onChange={(e) => setDescEn(e.target.value)}
         />
-         <TextField
+        <TextField
           margin="dense"
           id="description"
           label="Lien de redirection bouton (Bien mettre http(s)://)"
@@ -272,13 +284,14 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           value={link}
           onChange={(e) => setLink(e.target.value)}
         />
-       
+
         <DialogContentText>
           <h3>Image (Icone)</h3>
           Évitez les images trop lourdes : Elles seront téléchargé à chaque fois
           que l'utilisateur consulte les sponsors dans l'application.
           <br />
-          C'est sur téléphone on a pas besoin de beaucoup de qualité. <br/>Surtout ici, ce n'est qu'un icone
+          C'est sur téléphone on a pas besoin de beaucoup de qualité. <br />
+          Surtout ici, ce n'est qu'un icone
         </DialogContentText>
 
         <Stack
@@ -324,11 +337,11 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
 }
 
 function EditSponsorDialog({ isOpen, setIsOpen, sponsor }) {
-  const [image, setImage] = useState(sponsor?.imageUri);
-  const {apiToken} = useAuthentification()
-  const {newRequest} = useFetch()
+  const [image, setImage] = useState();
+  const { apiToken } = useAuthentification();
+  const { newRequest } = useFetch();
   useEffect(() => {
-    setImage(sponsor?.imageUri);
+    getImageBlobUrl(sponsor?.picture, apiToken, setImage);
   }, [sponsor]);
 
   const onImageChange = (files) => {
@@ -338,8 +351,8 @@ function EditSponsorDialog({ isOpen, setIsOpen, sponsor }) {
   };
 
   function deleteSponsor() {
-    newRequest("sponsor/" + sponsor.id, "DELETE", {}, apiToken)
-    setIsOpen(false)
+    newRequest("sponsor/" + sponsor.id, "DELETE", {}, apiToken);
+    setIsOpen(false);
   }
   return (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

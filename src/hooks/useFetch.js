@@ -41,7 +41,7 @@ function useFetch() {
     try {
       const response = await fetch(API + endPoint, options);
       const json = await response.json();
-      console.log("response", endPoint, json);
+      // console.log("response", endPoint, json);
       setError(null);
       setData(json);
       setLoading(false);
