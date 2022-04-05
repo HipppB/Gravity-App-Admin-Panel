@@ -53,10 +53,10 @@ function Layout(props) {
         </Button>
       </div>
       <Outlet />
-      <p style={{ position: "absolute", bottom: 0, color: "red" }}>
+      {/* <p style={{ position: "absolute", bottom: 0, color: "red" }}>
         N'oubliez pas de toujours tester sur l'app la bonne modification d'un
         changement (Les changements sont quasi instantanés)
-      </p>
+      </p> */}
     </div>
   );
 }
