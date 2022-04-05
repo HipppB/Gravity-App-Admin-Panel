@@ -1,20 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Alert } from "@mui/material";
+import useFetch from "../../../hooks/useFetch";
+import { useAuthentification } from "../../../Context/AuthContext";
 function Histoire(props) {
-  const [loading, setIsLoading] = useState(false);
-  const [loading2, setIsLoading2] = useState(false);
+  const { apiToken } = useAuthentification();
+  const {
+    data: dataHistoryFr,
+    loading: loadingFr,
+    error: errorFr,
+    newRequest: actualiseFr,
+  } = useFetch();
+  const {
+    data: dataHistoryEn,
+    loading: loadingEn,
+    error: errorEn,
+    newRequest: actualiseEn,
+  } = useFetch();
+
   const [alertStatus, setAlertStatus] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
+  const [historyFr, setHistoryFr] = useState();
+  const [historyEn, setHistoryEn] = useState();
+  useEffect(() => {
+    actualiseFr("presentation/3", "GET", {}, apiToken);
+    actualiseEn("presentation/4", "GET", {}, apiToken);
+  }, []);
+  useEffect(() => {
+    if (dataHistoryFr && !loadingFr) {
+      setHistoryFr(dataHistoryFr.content);
+    }
+  }, [dataHistoryFr, loadingFr]);
+  useEffect(() => {
+    if (dataHistoryEn && !loadingEn) {
+      setHistoryEn(dataHistoryEn.content);
+    }
+  }, [dataHistoryEn, loadingEn]);
   function handleRequest() {
     setAlertStatus("info");
     setAlertMessage("Sauvegarde en cours. NE PAS CHANGER DE PAGE");
-    setIsLoading(true);
+    actualiseFr(
+      "presentation/update/3",
+      "POST",
+      { content: historyFr },
+      apiToken
+    );
+
     setTimeout(() => {
-      setIsLoading(false);
       setAlertStatus("success");
       setAlertMessage("Modifications sauvegardées !");
       setTimeout(() => setAlertStatus(null), 2000);
@@ -23,9 +58,14 @@ function Histoire(props) {
   function handleRequest2() {
     setAlertStatus("info");
     setAlertMessage("Sauvegarde en cours.  NE PAS CHANGER DE PAGE");
-    setIsLoading2(true);
+    actualiseEn(
+      "presentation/update/4",
+      "POST",
+      { content: historyEn },
+      apiToken
+    );
+
     setTimeout(() => {
-      setIsLoading2(false);
       setAlertStatus("success");
       setAlertMessage("Modifications sauvegardées !");
       setTimeout(() => setAlertStatus(null), 2000);
@@ -35,10 +75,15 @@ function Histoire(props) {
     <div
       style={{
         justifyContent: "center",
-
+        flexDirection: "column",
+        alignItems: "center",
         display: "flex",
       }}
     >
+      Edit de l'histoire de Gravity (page d'accueil)
+      <br />
+      Vous pouvez marquer {"{name}"} pour inserer le nom de l'utilisateurs (Vide
+      si non renseigné)
       <div className="HistoiresContainer">
         <div className="HistoireContainer">
           <TextareaAutosize
@@ -50,16 +95,18 @@ function Histoire(props) {
               height: 400,
               marginBottom: 30,
             }}
+            value={historyFr}
+            onChange={(e) => setHistoryFr(e.target.value)}
           />
           <Box sx={{ m: 1, position: "relative" }}>
             <Button
               variant="contained"
-              disabled={loading2}
+              disabled={loadingFr}
               onClick={handleRequest2}
             >
               Sauvegarder
             </Button>
-            {loading2 && (
+            {loadingFr && (
               <CircularProgress
                 size={24}
                 sx={{
@@ -84,17 +131,19 @@ function Histoire(props) {
               height: 400,
               marginBottom: 30,
             }}
+            value={historyEn}
+            onChange={(e) => setHistoryEn(e.target.value)}
           />
 
           <Box sx={{ m: 1, position: "relative" }}>
             <Button
               variant="contained"
-              disabled={loading}
+              disabled={loadingEn}
               onClick={handleRequest}
             >
               Sauvegarder
             </Button>
-            {loading && (
+            {loadingEn && (
               <CircularProgress
                 size={24}
                 sx={{

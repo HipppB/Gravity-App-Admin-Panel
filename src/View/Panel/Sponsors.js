@@ -20,68 +20,15 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import LanguageIcon from "@mui/icons-material/Language";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-
+import { useAuthentification } from "../../Context/AuthContext";
+import useFetch from "../../hooks/useFetch";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
-const sponsorsData = [
-  {
-    id: 1,
-    name: "Super Sponsor",
-
-    descriptionFR: "Bon et pas cher",
-    descriptionEN: "Succulent and inexpensive",
-
-    imageUri:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-  },
-  {
-    id: 2,
-    name: "Super Sponsor 2",
-
-    descriptionFR: "Bon et pas cher",
-    descriptionEN: "Succulent and inexpensive",
-
-    imageUri:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-  },
-  {
-    id: 3,
-    name: "Super Sponsor 3",
-
-    descriptionFR: "Bon et pas cher",
-    descriptionEN:
-      "This is a very long description just to check that everything is working fine. If not I have to redo it all",
-
-    imageUri:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-  },
-  {
-    id: 4,
-    name: "Super Sponsor 4",
-
-    descriptionFR: "Bon et pas cher test description à rallonge pour voir",
-    descriptionEN: "Succulent and inexpensive",
-
-    imageUri:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-  },
-  {
-    id: 5,
-    name: "Super Sponsor 5",
-
-    descriptionFR: "Bon et pas cher",
-    descriptionEN: "Succulent and inexpensive",
-
-    imageUri:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-  },
-];
-
+import getImagePath from "../../data/getImagePath";
 const Input = styled("input")({
   display: "none",
 });
@@ -90,16 +37,36 @@ function Sponsors(props) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [sponsorInEdit, setSponsorInEdit] = useState();
   function modifySponsor(id) {
-    setSponsorInEdit(sponsorsData[id - 1]);
+    setSponsorInEdit(id);
     setIsEditOpen(true);
   }
+  const { apiToken } = useAuthentification();
+  const {
+    data: allSponsors,
+    loading: loadingSponsors,
+    error: errorSponsors,
+    newRequest: fetchAllSponsors,
+  } = useFetch();
+  const [sponsorsData, setSponsorsData] = useState([]);
+
+  useEffect(() => {
+    if(!isOpen && !isEditOpen) {
+    fetchAllSponsors("sponsor/all", "GET", {}, apiToken);
+  }
+  }, [isEditOpen, isOpen]);
+  useEffect(() => {
+    if (allSponsors && !loadingSponsors) {
+      setSponsorsData(allSponsors);
+      console.log(allSponsors);
+    }
+  }, [loadingSponsors, allSponsors]);
   return (
     <div
       style={{ alignItems: "center", display: "flex", flexDirection: "column" }}
     >
       <h3>Liste des sponsors</h3>
       <CreateSponsorDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-      <BasicTable modifyCallBack={modifySponsor} />
+      <BasicTable modifyCallBack={modifySponsor} sponsorsData={sponsorsData} />
       <Button
         variant="contained"
         style={{ marginTop: 20 }}
@@ -116,14 +83,13 @@ function Sponsors(props) {
   );
 }
 
-function BasicTable({ modifyCallBack }) {
-  const [activeLang, setActiveLang] = useState("fr");
+function BasicTable({ modifyCallBack, sponsorsData }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Image</TableCell>
+            {/* <TableCell>Image</TableCell> */}
             <TableCell>Sponsors</TableCell>
 
             <TableCell align="center">
@@ -131,7 +97,7 @@ function BasicTable({ modifyCallBack }) {
               <IconButton
                 size={"small"}
                 onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
+                  // setActiveLang(activeLang === "fr" ? "en" : "fr");
                 }}
               >
                 <SvgIcon component={LanguageIcon} />
@@ -142,35 +108,37 @@ function BasicTable({ modifyCallBack }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sponsorsData.map((sponsor) => (
-            <TableRow key={sponsor.id}>
-              <TableCell>
-                <Avatar alt="Image" src={sponsor.imageUri} />
-              </TableCell>
+          {sponsorsData.map((sponsor) => {
+            console.log(sponsor);
+            
+            return (
+              <TableRow key={sponsor.id}>
+                {/* <TableCell>
+                  <Avatar alt="Image" src={sponsor.imageUri} />
+                </TableCell> */}
 
-              <TableCell component="th" scope="row">
-                {sponsor.name}
-              </TableCell>
+                <TableCell component="th" scope="row">
+                  {sponsor.name}
+                </TableCell>
 
-              <TableCell align="center">
-                <div style={{ maxWidth: 300, textAlign: "center" }}>
-                  {activeLang === "fr"
-                    ? sponsor.descriptionFR
-                    : sponsor.descriptionEN}
-                </div>
-              </TableCell>
+                <TableCell align="center">
+                  <div style={{ maxWidth: 300, textAlign: "center" }}>
+                    {sponsor.translation[0].description}
+                  </div>
+                </TableCell>
 
-              <TableCell align="right">
-                <IconButton
-                  onClick={() => {
-                    modifyCallBack(sponsor.id);
-                  }}
-                >
-                  <SvgIcon component={EditIcon} color="info" />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell align="right">
+                  <IconButton
+                    onClick={() => {
+                      modifyCallBack(sponsor);
+                    }}
+                  >
+                    <SvgIcon component={EditIcon} color="info" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
@@ -179,9 +147,60 @@ function BasicTable({ modifyCallBack }) {
 
 function CreateSponsorDialog({ isOpen, setIsOpen }) {
   const [image, setImage] = useState();
+  const [imageFile, setImageFile] = useState()
+  const {apiToken} = useAuthentification()
+  const {newRequest} = useFetch()
 
+
+  const [name, setName] = useState("")
+  const [link, setLink] = useState("")
+  const [picture, setPicture] = useState("")
+  const [descFr, setDescFr] = useState("")
+  const [descEn, setDescEn] = useState("")
+  const [subFr, setSubFr] = useState("")
+  const [subEn, setSubEn] = useState("")
+  async function createSponsor() {
+    if(imageFile) {
+      getImagePath(imageFile, apiToken).then((imageUri) =>requestCreation(imageUri.filename) )
+
+    }
+    else {
+      requestCreation("")
+    }
+    
+  }
+  function requestCreation(filename) {
+    newRequest("sponsor/create", "POST", {
+      "type": "classic",
+      "name": name,
+      "link": link,
+      "picture": filename,
+      "longitude": 0,
+      "latitude": 0,
+      "translation": [
+        {
+          "language": "fr",
+          "isDefault": true,
+          "description": descFr,
+          "context_text": subFr  + "\n"
+        },
+        {
+          "language": "en",
+          "isDefault": true,
+          "description": descEn,
+          "context_text": subEn  + "\n"
+    
+        }
+      ]
+    },apiToken)
+    setIsOpen(false)
+    setImage()
+    setImageFile()
+
+  }
   const onImageChange = (files) => {
     if (files && files[0]) {
+      setImageFile(files[0])
       setImage(URL.createObjectURL(files[0]));
     }
   };
@@ -200,7 +219,29 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           label="Nom du sponsor"
           fullWidth
           variant="filled"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
+         <TextField
+          margin="dense"
+          id="adress"
+          label="Sous titre fr"
+          fullWidth
+          variant="filled"
+          value={subFr}
+          onChange={(e) => setSubFr(e.target.value)}
+        />
+
+        <TextField
+          margin="dense"
+          id="adress"
+          label="Sous titre en"
+          fullWidth
+          variant="filled"
+          value={subEn}
+          onChange={(e) => setSubEn(e.target.value)}
+        />
+
         <TextField
           margin="dense"
           id="description"
@@ -208,6 +249,8 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           multiline
           fullWidth
           variant="filled"
+          value={descFr}
+          onChange={(e) => setDescFr(e.target.value)}
         />
         <TextField
           margin="dense"
@@ -216,21 +259,26 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
           multiline
           fullWidth
           variant="filled"
+          value={descEn}
+          onChange={(e) => setDescEn(e.target.value)}
         />
-        <TextField
+         <TextField
           margin="dense"
-          id="adress"
-          label="Adresse"
+          id="description"
+          label="Lien de redirection bouton (Bien mettre http(s)://)"
+          multiline
           fullWidth
           variant="filled"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
         />
-
+       
         <DialogContentText>
-          <h3>Image de présentation</h3>
+          <h3>Image (Icone)</h3>
           Évitez les images trop lourdes : Elles seront téléchargé à chaque fois
           que l'utilisateur consulte les sponsors dans l'application.
           <br />
-          C'est sur téléphone on a pas besoin de beaucoup de qualité.
+          C'est sur téléphone on a pas besoin de beaucoup de qualité. <br/>Surtout ici, ce n'est qu'un icone
         </DialogContentText>
 
         <Stack
@@ -267,7 +315,7 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setIsOpen(false)}>Annuler</Button>
-        <Button variant="contained" onClick={() => setIsOpen(false)}>
+        <Button variant="contained" onClick={() => createSponsor()}>
           Ajouter le sponsor
         </Button>
       </DialogActions>
@@ -277,6 +325,8 @@ function CreateSponsorDialog({ isOpen, setIsOpen }) {
 
 function EditSponsorDialog({ isOpen, setIsOpen, sponsor }) {
   const [image, setImage] = useState(sponsor?.imageUri);
+  const {apiToken} = useAuthentification()
+  const {newRequest} = useFetch()
   useEffect(() => {
     setImage(sponsor?.imageUri);
   }, [sponsor]);
@@ -286,6 +336,11 @@ function EditSponsorDialog({ isOpen, setIsOpen, sponsor }) {
       setImage(URL.createObjectURL(files[0]));
     }
   };
+
+  function deleteSponsor() {
+    newRequest("sponsor/" + sponsor.id, "DELETE", {}, apiToken)
+    setIsOpen(false)
+  }
   return (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTitle>Modification du sponsor id {sponsor?.id}</DialogTitle>
@@ -374,12 +429,12 @@ function EditSponsorDialog({ isOpen, setIsOpen, sponsor }) {
         <Button
           color="error"
           variant="contained"
-          onClick={() => setIsOpen(false)}
+          onClick={() => deleteSponsor()}
         >
           Supprimer
         </Button>
         <Button variant="contained" onClick={() => setIsOpen(false)}>
-          Modifier
+          Mettre à jour
         </Button>
       </DialogActions>
     </Dialog>

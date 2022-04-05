@@ -32,7 +32,7 @@ function Login(props) {
           disableElevation
           variant="contained"
           onClick={() => {
-            login();
+            login({ email: idValue, password: passValue });
           }}
         >
           Se connecter
