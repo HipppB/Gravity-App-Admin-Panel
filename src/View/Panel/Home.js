@@ -62,7 +62,7 @@ function Home() {
           variant="fullWidth"
         >
           <Tab label="Messagerie" {...a11yProps(0)} />
-          <Tab label="Histoire" {...a11yProps(1)} />
+          <Tab label="Histoire, message de bienvenue" {...a11yProps(1)} />
           <Tab label="Projet Péda, Son et Film" {...a11yProps(2)} />
 
           <Tab label="Utilisateurs" {...a11yProps(3)} />
