@@ -7,17 +7,16 @@ function useFetch() {
   const [error, setError] = useState(null);
 
   async function newRequest(endPoint, method, content, apiToken, file) {
-    console.log("New request");
+    console.log("New request", endPoint);
     setLoading(true);
     setData(null);
     setError(null);
     let options = {
       method: method,
       headers: {
-        Accept: !file ? "application/json" : "multipart/form-data",
-        "Content-Type": !file
-          ? "application/json;charset=UTF-8"
-          : "multipart/form-data",
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+        Authorization: "Bearer " + apiToken,
       },
     };
     if (apiToken) {
@@ -41,7 +40,7 @@ function useFetch() {
     try {
       const response = await fetch(API + endPoint, options);
       const json = await response.json();
-      console.log("response", endPoint, json);
+      // console.log("response", endPoint, json);
       setError(null);
       setData(json);
       setLoading(false);
