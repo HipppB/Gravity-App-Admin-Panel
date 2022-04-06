@@ -19,7 +19,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import LanguageIcon from "@mui/icons-material/Language";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-function Events(props) {
+function Challenges(props) {
   const [activeLang, setActiveLang] = useState("fr");
 
   const eventList = [
@@ -50,8 +50,8 @@ function Events(props) {
   ];
   return (
     <>
-      <h3>Activez et desactivez les events de l'app</h3>
-      <div>
+      <h3>Créez et supprimez les events de l'app</h3>
+      {/* <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -96,7 +96,7 @@ function Events(props) {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </>
   );
 }
@@ -157,4 +157,4 @@ function EventLine({ event, modifyCallBack, activeLang }) {
   );
 }
 
-export default Events;
+export default Challenges;
