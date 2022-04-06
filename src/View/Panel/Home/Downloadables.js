@@ -96,6 +96,10 @@ function Downloadables(props) {
         }}
       >
         <h2>Projet Pédagogique</h2>
+        Attention, le visibilité de l'onglet est basé sur Projet Peda FR
+        <br /> Si vous indiquez le lien du projet FR et pas de l'EN
+        l'application crashera lors d'une tentative d'accès par les utilisateurs
+        anglophones
         <div
           style={{ marginBottom: 20, alignItems: "center", display: "flex" }}
         >
@@ -106,7 +110,18 @@ function Downloadables(props) {
             value={ppFr}
             onChange={(e) => setPpFr(e.target.value)}
           />
-          <Button variant="contained" style={{ marginRight: 20 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() =>
+              actualisePpFr(
+                "presentation/update/5",
+                "PUT",
+                { content: ppFr, status: !!ppFr },
+                apiToken
+              )
+            }
+          >
             Mettre à jour
           </Button>
         </div>
@@ -120,7 +135,18 @@ function Downloadables(props) {
             value={ppEn}
             onChange={(e) => setPpEn(e.target.value)}
           />
-          <Button variant="contained" style={{ marginRight: 20 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() =>
+              actualisePpEn(
+                "presentation/update/6",
+                "PUT",
+                { content: ppEn, status: !!ppEn },
+                apiToken
+              )
+            }
+          >
             Mettre à jour
           </Button>
         </div>
@@ -143,7 +169,18 @@ function Downloadables(props) {
             value={son}
             onChange={(e) => setSon(e.target.value)}
           />
-          <Button variant="contained" style={{ marginRight: 20 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() =>
+              actualiseSon(
+                "presentation/update/7",
+                "PUT",
+                { content: son, status: !!son },
+                apiToken
+              )
+            }
+          >
             Mettre à jour
           </Button>
         </div>
@@ -166,7 +203,18 @@ function Downloadables(props) {
             value={film}
             onChange={(e) => setFilm(e.target.value)}
           />
-          <Button variant="contained" style={{ marginRight: 20 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() =>
+              actualiseFilm(
+                "presentation/update/8",
+                "PUT",
+                { content: film, status: !!film },
+                apiToken
+              )
+            }
+          >
             Mettre à jour
           </Button>
         </div>
@@ -189,7 +237,18 @@ function Downloadables(props) {
             value={recette}
             onChange={(e) => setRecette(e.target.value)}
           />
-          <Button variant="contained" style={{ marginRight: 20 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() =>
+              actualiseRecette(
+                "presentation/update/9",
+                "PUT",
+                { content: recette, status: !!recette },
+                apiToken
+              )
+            }
+          >
             Mettre à jour
           </Button>
         </div>

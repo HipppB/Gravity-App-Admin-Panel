@@ -230,7 +230,7 @@ function TableLine({ event, modifyCallBack, activeLang }) {
   return (
     <TableRow key={event.id}>
       <TableCell>
-        <Avatar alt="Image" src={event.imageUri} />
+        <ImageIcon imgUri={event.image} />
       </TableCell>
 
       <TableCell component="th" scope="row" align="center">
@@ -288,6 +288,12 @@ function TableLine({ event, modifyCallBack, activeLang }) {
       </TableCell>
     </TableRow>
   );
+}
+function ImageIcon({ imgUri }) {
+  const [img, setimg] = useState();
+  const { apiToken } = useAuthentification();
+  useEffect(() => getImageBlobUrl(imgUri, apiToken, setimg), []);
+  return <Avatar alt="Image" src={img} />;
 }
 
 function CreateEventDialog({ isOpen, setIsOpen }) {
