@@ -274,7 +274,7 @@ function TableLine({ event, modifyCallBack, activeLang }) {
             <SvgIcon component={VisibilityIcon} color="info" />
           </IconButton>
         ) : (
-          "Inscription Non Activé"
+          "Non Activé"
         )}
       </TableCell>
       <TableCell align="center">
