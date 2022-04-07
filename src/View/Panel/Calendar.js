@@ -41,52 +41,7 @@ import useFetch from "../../hooks/useFetch";
 const Input = styled("input")({
   display: "none",
 });
-// const calendarEvents = [
-//   {
-//     id: 1,
-//     nameFR: "Soirée Gravity",
-//     nameEN: "Gravity's night",
-//     headerFR: "Jeudi ici !",
-//     headerEN: "Thursday there !",
-//     bottomFR: "",
-//     bottomEN: "",
-//     descriptionFR: "Super Description en Français",
-//     descriptionEN: "English description",
-//     dateTime: new Date(),
-//     adresse: "",
-//     lat: 0,
-//     long: 0,
-//     markerNameFR: "Localisation",
-//     markerNameEN: "Localisation EN",
-//     markerDescriptionFR: "Petite Description",
-//     markerDescriptionEN: "Small Description",
-//     isInscriptionPossible: true,
-//     imageUri:
-//       "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-//   },
-//   {
-//     id: 2,
-//     nameFR: "Soirée Gravity",
-//     nameEN: "Gravity's night",
-//     headerFR: "Jeudi ici !",
-//     headerEN: "Thursday there !",
-//     localisationFR: "",
-//     localisationEN: "",
-//     descriptionFR: "Super Description en Français",
-//     descriptionEN: "English description",
-//     dateTime: new Date(),
-//     adresse: "",
-//     lat: 0,
-//     long: 0,
-//     markerNameFR: "Localisation",
-//     markerNameEN: "Localisation EN",
-//     markerDescriptionFR: "Petite Description",
-//     markerDescriptionEN: "Small Description",
-//     isInscriptionPossible: false,
-//     imageUri:
-//       "https://media-cdn.tripadvisor.com/media/photo-s/0f/39/25/9e/zlata-praha-in-the-evening.jpg",
-//   },
-// ];
+
 function Calendar(props) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -102,7 +57,7 @@ function Calendar(props) {
   } = useFetch();
   useEffect(() => {
     if (!isCreateOpen && !isEditOpen) {
-      fetchAllEvents("event/all", "GET", {}, apiToken);
+      fetchAllEvents("event/admin/all", "GET", {}, apiToken);
     }
   }, [isEditOpen, isCreateOpen]);
   useEffect(() => {
@@ -123,6 +78,12 @@ function Calendar(props) {
       style={{ alignItems: "center", display: "flex", flexDirection: "column" }}
     >
       <h3>Liste des évenements dans le calendrier</h3>
+      <h5>
+        Visualisez rapidement en anglais et en français en cliquant sur les{" "}
+        <IconButton size={"small"}>
+          <SvgIcon component={LanguageIcon} />
+        </IconButton>
+      </h5>
       <CalendarTable modifyCallBack={modifyEvent} eventsData={eventsData} />
       <Button
         variant="contained"
@@ -143,7 +104,14 @@ function Calendar(props) {
 }
 
 function CalendarTable({ eventsData, modifyCallBack }) {
-  const [activeLang, setActiveLang] = useState("fr");
+  const [activeLang, setActiveLang] = useState(0);
+  function toggleLang() {
+    if (activeLang === 0) {
+      setActiveLang(1);
+    } else {
+      setActiveLang(0);
+    }
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -153,47 +121,21 @@ function CalendarTable({ eventsData, modifyCallBack }) {
             <TableCell align="center">Image</TableCell>
             <TableCell align="center">
               Nom{" "}
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
             <TableCell align="center">
               Entête
               <br />
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
-                <SvgIcon component={LanguageIcon} />
-              </IconButton>
-            </TableCell>
-            <TableCell align="center">
-              Bottom Text
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
 
             <TableCell align="center">
               Description
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
@@ -234,22 +176,18 @@ function TableLine({ event, modifyCallBack, activeLang }) {
       </TableCell>
 
       <TableCell component="th" scope="row" align="center">
-        {activeLang === "fr" ? event.nameFR : event.nameEN}
+        {event.translation[activeLang].title}
       </TableCell>
 
       <TableCell align="center">
         <div style={{ maxWidth: 100, textAlign: "center" }}>
-          {activeLang === "fr" ? event.headerFR : event.headerEN}
+          {event.translation[activeLang].short_desc}
         </div>
       </TableCell>
-      <TableCell align="center">
-        <div style={{ maxWidth: 100, textAlign: "center" }}>
-          {activeLang === "fr" ? event.bottomFR : event.bottomEN}
-        </div>
-      </TableCell>
+
       <TableCell align="center">
         <div style={{ maxWidth: 200, textAlign: "center" }}>
-          {activeLang === "fr" ? event.descriptionFR : event.descriptionEN}
+          {event.translation[activeLang].long_desc}
         </div>
       </TableCell>
       <TableCell align="center">
@@ -349,7 +287,7 @@ function CreateEventDialog({ isOpen, setIsOpen }) {
       "POST",
       {
         title: nameFr,
-        date: "2022-03-26T17:31:53.417Z",
+        date: dateValue,
         image: filename,
         latitude: lat,
         longitude: long,
@@ -361,16 +299,16 @@ function CreateEventDialog({ isOpen, setIsOpen }) {
           {
             language: "fr",
             isDefault: true,
-            short_desc: shortFr,
+            short_desc: shortFr ? shortFr : " ",
             long_desc: descFr,
-            title: nameFr,
+            title: nameFr ? nameFr : " ",
           },
           {
             language: "en",
             isDefault: false,
-            short_desc: shortEn,
+            short_desc: shortEn ? shortEn : " ",
             long_desc: descEn,
-            title: nameEn,
+            title: nameEn ? nameEn : " ",
           },
         ],
       },

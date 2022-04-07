@@ -52,7 +52,7 @@ function Sponsors(props) {
 
   useEffect(() => {
     if (!isOpen && !isEditOpen) {
-      fetchAllSponsors("sponsor/all", "GET", {}, apiToken);
+      fetchAllSponsors("sponsor/admin/all", "GET", {}, apiToken);
     }
   }, [isEditOpen, isOpen]);
   useEffect(() => {
@@ -85,22 +85,30 @@ function Sponsors(props) {
 }
 
 function BasicTable({ modifyCallBack, sponsorsData }) {
+  const [activeLang, setActiveLang] = useState(0);
+  function toggleLang() {
+    if (activeLang === 0) {
+      setActiveLang(1);
+    } else {
+      setActiveLang(0);
+    }
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Image</TableCell>
-            <TableCell>Sponsors</TableCell>
-
+            <TableCell>Nom</TableCell>
+            <TableCell align="center">
+              Sous titre
+              <IconButton size={"small"} onClick={toggleLang}>
+                <SvgIcon component={LanguageIcon} />
+              </IconButton>
+            </TableCell>
             <TableCell align="center">
               Description{" "}
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  // setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
@@ -112,7 +120,7 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
         <TableBody>
           {sponsorsData.map((sponsor) => {
             console.log(sponsor);
-
+            if (sponsor.type === "food") return <></>;
             return (
               <TableRow key={sponsor.id}>
                 <TableCell>
@@ -124,10 +132,14 @@ function BasicTable({ modifyCallBack, sponsorsData }) {
                 <TableCell component="th" scope="row">
                   {sponsor.name}
                 </TableCell>
-
                 <TableCell align="center">
                   <div style={{ maxWidth: 300, textAlign: "center" }}>
-                    {sponsor.translation[0].description}
+                    {sponsor.translation[activeLang].context_text}
+                  </div>
+                </TableCell>
+                <TableCell align="center">
+                  <div style={{ maxWidth: 300, textAlign: "center" }}>
+                    {sponsor.translation[activeLang].description}
                   </div>
                 </TableCell>
                 <TableCell>{sponsor.link}</TableCell>

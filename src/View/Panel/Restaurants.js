@@ -49,7 +49,7 @@ function Restaurants(props) {
   const [restaurantsData, setRestaurantsData] = useState([]);
   useEffect(() => {
     if (!isOpen && !isEditOpen) {
-      fetchAllRestaurants("sponsor/food/all", "GET", {}, apiToken);
+      fetchAllRestaurants("sponsor/admin/all", "GET", {}, apiToken);
     }
   }, [isEditOpen, isOpen]);
   useEffect(() => {
@@ -89,7 +89,14 @@ function Restaurants(props) {
 }
 
 function BasicTable({ modifyCallBack, restaurantsData }) {
-  const [activeLang, setActiveLang] = useState("fr");
+  const [activeLang, setActiveLang] = useState(0);
+  function toggleLang() {
+    if (activeLang === 0) {
+      setActiveLang(1);
+    } else {
+      setActiveLang(0);
+    }
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -100,12 +107,7 @@ function BasicTable({ modifyCallBack, restaurantsData }) {
             <TableCell>Url Bouton</TableCell>
             <TableCell>
               Localisation
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
@@ -113,23 +115,13 @@ function BasicTable({ modifyCallBack, restaurantsData }) {
             <TableCell align="right">Longitude</TableCell>
             <TableCell align="center">
               Description{" "}
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
             <TableCell align="center">
               Marker desc{" "}
-              <IconButton
-                size={"small"}
-                onClick={() => {
-                  setActiveLang(activeLang === "fr" ? "en" : "fr");
-                }}
-              >
+              <IconButton size={"small"} onClick={toggleLang}>
                 <SvgIcon component={LanguageIcon} />
               </IconButton>
             </TableCell>
@@ -137,47 +129,51 @@ function BasicTable({ modifyCallBack, restaurantsData }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {restaurantsData.map((restaurant) => (
-            <TableRow key={restaurant.id}>
-              <TableCell>
-                <ImageIcon imgUri={restaurant.picture} />
-              </TableCell>
+          {restaurantsData.map((restaurant) => {
+            if (restaurant.type === "classic") return <></>;
 
-              <TableCell component="th" scope="row">
-                {restaurant.name}
-              </TableCell>
-              <TableCell>{restaurant.link}</TableCell>
+            return (
+              <TableRow key={restaurant.id}>
+                <TableCell>
+                  <ImageIcon imgUri={restaurant.picture} />
+                </TableCell>
 
-              <TableCell style={{ maxWidth: 150 }}>
-                {restaurant.translation[0].context_text}
-              </TableCell>
-              <TableCell align="right">
-                {restaurant.location.coordinates[1]}
-              </TableCell>
-              <TableCell align="right">
-                {restaurant.location.coordinates[0]}
-              </TableCell>
-              <TableCell align="center">
-                <div style={{ maxWidth: 300, textAlign: "center" }}>
-                  {restaurant.translation[0].description}
-                </div>
-              </TableCell>
-              <TableCell align="center">
-                <div style={{ maxWidth: 300, textAlign: "center" }}>
-                  {restaurant.translation[0].subtitle}
-                </div>
-              </TableCell>
-              <TableCell align="right">
-                <IconButton
-                  onClick={() => {
-                    modifyCallBack(restaurant);
-                  }}
-                >
-                  <SvgIcon component={EditIcon} color="info" />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell component="th" scope="row">
+                  {restaurant.name}
+                </TableCell>
+                <TableCell>{restaurant.link}</TableCell>
+
+                <TableCell style={{ maxWidth: 150 }}>
+                  {restaurant.translation[activeLang].context_text}
+                </TableCell>
+                <TableCell align="right">
+                  {restaurant.location.coordinates[1]}
+                </TableCell>
+                <TableCell align="right">
+                  {restaurant.location.coordinates[0]}
+                </TableCell>
+                <TableCell align="center">
+                  <div style={{ maxWidth: 300, textAlign: "center" }}>
+                    {restaurant.translation[activeLang].description}
+                  </div>
+                </TableCell>
+                <TableCell align="center">
+                  <div style={{ maxWidth: 300, textAlign: "center" }}>
+                    {restaurant.translation[activeLang].subtitle}
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    onClick={() => {
+                      modifyCallBack(restaurant);
+                    }}
+                  >
+                    <SvgIcon component={EditIcon} color="info" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
