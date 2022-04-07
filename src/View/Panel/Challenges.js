@@ -41,83 +41,100 @@ const Input = styled("input")({
   display: "none",
 });
 function Challenges(props) {
-  const [activeLang, setActiveLang] = useState("fr");
+  const [activeLang, setActiveLang] = useState(0);
+  function toggleLang() {
+    if (activeLang === 0) {
+      setActiveLang(1);
+    } else {
+      setActiveLang(0);
+    }
+  }
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const eventList = [
-    {
-      id: 1,
-      nameFr: "Event Test 1",
-      nameEN: "Test Event 1",
-      descriptionFR: "Super Description",
-      descriptionEN: "Excellent short Description",
-      isActive: false,
-    },
-    {
-      id: 2,
-      nameFr: "Event Test 2",
-      nameEN: "Test Event 2",
-      descriptionFR: "Super Description",
-      descriptionEN: "Excellent short Description",
-      isActive: true,
-    },
-    {
-      id: 3,
-      nameFr: "Event Test 3",
-      nameEN: "test Event 3",
-      descriptionFR: "Super Description",
-      descriptionEN: "Excellent short Description",
-      isActive: false,
-    },
-  ];
+  const [challengeData, setChallengesData] = useState([]);
+  const { apiToken } = useAuthentification();
+  const [challengeInEdit, setChallengeInEdit] = useState();
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const {
+    data: allChallenges,
+    loading: loadingChallenges,
+    error: errorChallenges,
+    newRequest: fetchAllChallenges,
+  } = useFetch();
+  useEffect(() => {
+    if (!isCreateOpen && !isEditOpen) {
+      fetchAllChallenges("challenge/admin/all", "GET", {}, apiToken);
+    }
+  }, [isEditOpen, isCreateOpen]);
+  useEffect(() => {
+    console.log(allChallenges);
+
+    if (allChallenges && !loadingChallenges) {
+      setChallengesData(allChallenges);
+    }
+  }, [loadingChallenges, allChallenges]);
+
+  function modifyChallenge(challenge) {
+    setChallengeInEdit(challenge);
+    setIsEditOpen(true);
+  }
+
   return (
     <>
-      <h3>Créez et supprimez les events de l'app</h3>
-      {/* <div>
+      <h3>Créez et supprimez les challenges de l'app</h3>
+      <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell align="center"></TableCell>
+                <TableCell align="center">Type</TableCell>
                 <TableCell align="center">
                   Nom{" "}
-                  <IconButton
-                    size={"small"}
-                    onClick={() => {
-                      setActiveLang(activeLang === "fr" ? "en" : "fr");
-                    }}
-                  >
+                  <IconButton size={"small"} onClick={toggleLang}>
+                    <SvgIcon component={LanguageIcon} />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="center">
+                  Sous titre{" "}
+                  <IconButton size={"small"} onClick={toggleLang}>
                     <SvgIcon component={LanguageIcon} />
                   </IconButton>
                 </TableCell>
 
                 <TableCell align="center">
                   Description{" "}
-                  <IconButton
-                    size={"small"}
-                    onClick={() => {
-                      setActiveLang(activeLang === "fr" ? "en" : "fr");
-                    }}
-                  >
+                  <IconButton size={"small"} onClick={toggleLang}>
                     <SvgIcon component={LanguageIcon} />
                   </IconButton>
                 </TableCell>
-
-                <TableCell align="center">Changer de statut</TableCell>
+                <TableCell align="center">
+                  Récompense{" "}
+                  <IconButton size={"small"} onClick={toggleLang}>
+                    <SvgIcon component={LanguageIcon} />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="center">
+                  Date de fin (Spéciaux)
+                  <br />
+                  Date de début (Normaux)
+                </TableCell>
                 <TableCell align="center">Modifier</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {eventList.map((event) => (
-                <EventLine
-                  key={event.id}
-                  event={event}
+              {challengeData.map((challenge) => (
+                <ChallengeLine
+                  key={challenge.id}
+                  challenge={challenge}
                   activeLang={activeLang}
                 />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-      </div> */}
+      </div>
       <Button
         variant="contained"
         style={{ marginTop: 20 }}
@@ -133,53 +150,40 @@ function Challenges(props) {
   );
 }
 
-function EventLine({ event, modifyCallBack, activeLang }) {
+function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
   return (
     <TableRow
 
     // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell align="center">
-        <Avatar alt="Image" src={event.imageUri} align="center" />
+        <ImageIcon imgUri={challenge.imageUri} />
       </TableCell>
 
       <TableCell align="center" component="th" scope="row">
-        {activeLang === "fr" ? event.nameFr : event.nameEN}
+        {challenge?.type}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {challenge?.translation[activeLang]?.title}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {challenge?.translation[activeLang]?.subtitle}
       </TableCell>
 
-      <TableCell align="center">
-        <div style={{ maxWidth: 300, textAlign: "center" }}>
-          {activeLang === "fr" ? event.descriptionFR : event.descriptionEN}
-        </div>
+      <TableCell align="center" component="th" scope="row">
+        {challenge?.translation[activeLang]?.description}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {challenge?.translation[activeLang]?.rewards}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {challenge?.expiredAt}
       </TableCell>
 
-      <TableCell align="center">
-        {event.isActive ? (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              modifyCallBack(event.id);
-            }}
-          >
-            Désactiver
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => {
-              modifyCallBack(event.id);
-            }}
-          >
-            Activer
-          </Button>
-        )}
-      </TableCell>
       <TableCell align="center">
         <IconButton
           onClick={() => {
-            modifyCallBack(event.id);
+            modifyCallBack(challenge.id);
           }}
         >
           <SvgIcon component={EditIcon} color="info" />
@@ -188,7 +192,15 @@ function EventLine({ event, modifyCallBack, activeLang }) {
     </TableRow>
   );
 }
+function ImageIcon({ imgUri }) {
+  const [img, setimg] = useState();
+  const { apiToken } = useAuthentification();
+  useEffect(() => getImageBlobUrl(imgUri, apiToken, setimg), []);
+  return <Avatar alt="Image" src={img} />;
+}
 function CreateChallengeDialog({ isOpen, setIsOpen }) {
+  const dateDefault = new Date();
+
   const [image, setImage] = useState();
   const [imageFile, setImageFile] = useState();
   const { apiToken } = useAuthentification();
@@ -196,28 +208,33 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
 
   const [nameFr, setNameFr] = useState("");
   const [nameEn, setNameEn] = useState("");
-
-  const [link, setLink] = useState("");
-  const [descFr, setDescFr] = useState("");
-  const [descEn, setDescEn] = useState("");
   const [shortFr, setShortFr] = useState("");
   const [shortEn, setShortEn] = useState("");
-  const [locaFr, setLocaFr] = useState("");
-  const [locaEn, setLocaEn] = useState("");
-  const [lat, setLat] = useState("");
-  const [long, setLong] = useState("");
-  const [markerName, setMarkerName] = useState("");
-  const [markerSub, setMarkerSub] = useState("");
-  const [isEventOpen, setEventOpen] = useState(true);
-  const [dateEv, setDate] = useState();
-  const [dateValue, setDateValue] = useState();
+  const [descFr, setDescFr] = useState("");
+  const [descEn, setDescEn] = useState("");
+  const [rewFr, setRewFr] = useState("");
+  const [rewEn, setRewEn] = useState("");
+  const [isSpecial, setSpecial] = useState(false);
+  const [acceptsImage, setAcceptImage] = useState(true);
+  const [acceptsText, setAcceptText] = useState(false);
+  const [dateEv, setDate] = useState(
+    dateDefault.getDate() +
+      "/" +
+      (dateDefault.getMonth() + 1) +
+      " " +
+      dateDefault.getHours() +
+      ":" +
+      dateDefault.getMinutes()
+  );
+  const [dateValue, setDateValue] = useState(dateDefault);
+
   function mangaeDate(value) {
     try {
       let da = value.split(" ");
       let da1 = da[0].split("/");
       let da2 = da[1].split(":");
       console.log(da1, da2);
-      const dateNew = new Date(2022, da1[1], da1[0], da2[0], da2[1], 0);
+      const dateNew = new Date(2022, da1[1] - 1, da1[0], da2[0], da2[1], 0);
       console.log(dateNew);
       setDateValue(dateNew);
       setDate(value);
@@ -225,41 +242,43 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
       setDate(value);
     }
   }
-  async function createEvent() {
+  async function createChallenge() {
     if (imageFile) {
       getImagePath(imageFile, apiToken).then((imageUri) =>
         requestCreation(imageUri.filename)
       );
     } else {
-      requestCreation("");
+      requestCreation();
     }
   }
   function requestCreation(filename) {
-    console.log(apiToken);
-    const date = new Date();
     newRequest(
       "challenge/create",
       "POST",
       {
-        title: "challenge",
-        expiredAt: date,
-        imageUri: "image-1648676328780-623333175.jpg",
-        type: "normal",
-        submissionType: "image",
+        title: nameFr,
+        expiredAt: dateValue,
+        imageUri: filename,
+        type: isSpecial ? "special" : "normal",
+        submissionType: acceptsImage
+          ? acceptsText
+            ? "mixed"
+            : "image"
+          : "text",
         translation: [
           {
             language: "fr",
-            title: "string",
-            subtitle: "string",
-            description: "string",
-            rewards: "string",
+            title: nameFr,
+            subtitle: shortFr,
+            description: descFr,
+            rewards: rewFr,
           },
           {
             language: "en",
-            title: "string",
-            subtitle: "string",
-            description: "string",
-            rewards: "string",
+            title: nameEn,
+            subtitle: shortEn,
+            description: descEn,
+            rewards: rewEn,
           },
         ],
       },
@@ -287,29 +306,29 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
         </DialogContentText>
         <DialogContentText>Type de défi :</DialogContentText>
         <FormControlLabel
-          checked={isEventOpen}
-          onChange={() => setEventOpen(!isEventOpen)}
+          checked={isSpecial}
+          onChange={() => setSpecial(!isSpecial)}
           control={<Checkbox />}
           label="Défis spécial"
           labelPlacement="end"
         />
         <br />
         <FormControlLabel
-          checked={isEventOpen}
-          onChange={() => setEventOpen(!isEventOpen)}
+          checked={acceptsText}
+          onChange={() => setAcceptText(!acceptsText)}
           control={<Checkbox />}
           label="Permettre une réponse écrite"
           labelPlacement="end"
         />
         <br />
         <FormControlLabel
-          checked={isEventOpen}
-          onChange={() => setEventOpen(!isEventOpen)}
+          checked={acceptsImage}
+          onChange={() => setAcceptImage(!acceptsImage)}
           control={<Checkbox />}
           label="Permettre une réponse par une ou plusieurs photos/vidéos"
           labelPlacement="end"
         />
-        <DialogContentText>Type de défi :</DialogContentText>
+        <DialogContentText>Informations sur le défi :</DialogContentText>
         <div style={{ justifyContent: "space-between", display: "flex" }}>
           <TextField
             margin="dense"
@@ -334,7 +353,7 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
           <TextField
             margin="dense"
             id="shortFr"
-            label="Entete FR (Page liste Events)"
+            label="Sous titre Fr"
             variant="filled"
             style={{ width: "48%" }}
             value={shortFr}
@@ -343,7 +362,7 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
           <TextField
             margin="dense"
             id="shortEn"
-            label="Entete EN (Page liste Events)"
+            label="Sous titre En"
             variant="filled"
             style={{ width: "48%" }}
             value={shortEn}
@@ -372,10 +391,32 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
             onChange={(e) => setDescEn(e.target.value)}
           />
         </div>
+        <div style={{ justifyContent: "space-between", display: "flex" }}>
+          <TextField
+            multiline
+            margin="dense"
+            id="name"
+            label="Récompense FR"
+            variant="filled"
+            style={{ width: "48%" }}
+            value={rewFr}
+            onChange={(e) => setRewFr(e.target.value)}
+          />
+          <TextField
+            multiline
+            margin="dense"
+            id="name"
+            label="Récompenses EN"
+            variant="filled"
+            style={{ width: "48%" }}
+            value={rewEn}
+            onChange={(e) => setRewEn(e.target.value)}
+          />
+        </div>
         <TextField
           margin="dense"
           id="date"
-          label="Date et heure, format : JJ/MM HH:MIN"
+          label="Date et heure de fin, format : JJ/MM HH:MIN"
           variant="filled"
           value={dateEv}
           fullWidth
@@ -392,56 +433,7 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
           "Impossible d'analyser la date."
         )}
         <DialogContentText>
-          Vous pouvez utilisez{" "}
-          <a href="https://www.coordonnees-gps.fr" target="_blank">
-            ce site
-          </a>{" "}
-          pour trouver la latitude et la longitude. <br />
-          Ne pas hésiter à replacer manuellement le pointeur sur le lieu avant
-          de prendre les coordonnées !
-        </DialogContentText>
-        <div style={{ justifyContent: "space-between", display: "flex" }}>
-          <TextField
-            margin="dense"
-            id="lat"
-            label="Latitude (NE PAS ARRONDIR)"
-            variant="filled"
-            style={{ width: "48%" }}
-            value={lat}
-            onChange={(e) => setLat(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            id="long"
-            label="Longitude (NE PAS ARRONDIR)"
-            variant="filled"
-            style={{ width: "48%" }}
-            value={long}
-            onChange={(e) => setLong(e.target.value)}
-          />
-        </div>
-        <div style={{ justifyContent: "space-between", display: "flex" }}>
-          <TextField
-            margin="dense"
-            id="nameMark"
-            label="Nom Marker"
-            variant="filled"
-            style={{ width: "48%" }}
-            value={markerName}
-            onChange={(e) => setMarkerName(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            id="descMark"
-            label="Description"
-            variant="filled"
-            style={{ width: "48%" }}
-            value={markerSub}
-            onChange={(e) => setMarkerSub(e.target.value)}
-          />
-        </div>
-        <DialogContentText>
-          <h3>Image de présentation</h3>
+          <h3>Image de présentation récompense (Ou non)</h3>
           Évitez les images trop lourdes : Elles seront téléchargé à chaque fois
           que l'utilisateur consulte les restaurants dans l'application.
           <br />
@@ -481,7 +473,7 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setIsOpen(false)}>Annuler</Button>
-        <Button variant="contained" onClick={() => createEvent()}>
+        <Button variant="contained" onClick={() => createChallenge()}>
           Ajouter dans le calendrier
         </Button>
       </DialogActions>
