@@ -188,7 +188,12 @@ function CreateMemberModal({ isOpen, setIsOpen }) {
           </label>
         </Stack>
 
-        <Button variant="contained" color="success" fullWidth>
+        <Button
+          variant="contained"
+          color="success"
+          fullWidth
+          onClick={() => createMember()}
+        >
           Créer membre
         </Button>
       </DialogContent>
