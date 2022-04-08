@@ -77,12 +77,13 @@ function CreateMemberModal({ isOpen, setIsOpen }) {
   };
 
   async function createMember() {
+    console.log("IMAGE", imageFile);
     if (imageFile) {
-      getImagePath(imageFile, apiToken).then((imageUri) =>
-        requestCreation(imageUri.filename)
-      );
+      getImagePath(imageFile, apiToken).then((imageUri) => {
+        requestCreation(imageUri.filename);
+      });
     } else {
-      requestCreation();
+      requestCreation("error");
     }
   }
   function requestCreation(filename) {
@@ -90,11 +91,13 @@ function CreateMemberModal({ isOpen, setIsOpen }) {
       "member/create",
       "POST",
       {
-        id: id || null,
         first_name: name,
-        image: filename,
+        last_name: "string",
+        nickname: pole || "string",
+        image: filename || "echec",
         role: post,
       },
+
       apiToken
     );
     setIsOpen(false);
@@ -105,7 +108,7 @@ function CreateMemberModal({ isOpen, setIsOpen }) {
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTitle>Création d'un membre GRAVITY</DialogTitle>
       <DialogContent>
-        <TextField
+        {/* <TextField
           margin="dense"
           id="Id"
           label="Id compte public"
@@ -113,7 +116,7 @@ function CreateMemberModal({ isOpen, setIsOpen }) {
           fullWidth
           value={id}
           onChange={(e) => setId(e.target.value)}
-        />
+        /> */}
         <TextField
           margin="dense"
           id="name"
