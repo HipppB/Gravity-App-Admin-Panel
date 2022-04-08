@@ -14,7 +14,7 @@ async function getImagePath(file, apiToken) {
     };
 
     const response = await fetch(
-      "https://api.liste-gravity.fr/static/upload",
+      "https://dev.liste-gravity.fr/static/upload",
       options
     );
     const json = await response.json();

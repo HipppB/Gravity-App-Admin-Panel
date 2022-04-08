@@ -11,6 +11,8 @@ import Histoire from "./Home/Histoire";
 import Users from "./Home/Users";
 import "./styleHome.css";
 import Downloadables from "./Home/Downloadables";
+import Notifications from "./Home/Notifications";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,29 +63,26 @@ function Home() {
           aria-label="basic tabs example"
           variant="fullWidth"
         >
-          <Tab label="Messagerie" {...a11yProps(0)} />
-          <Tab label="Histoire, message de bienvenue" {...a11yProps(1)} />
-          <Tab label="Projet Péda, Son et Film" {...a11yProps(2)} />
+          <Tab label="Histoire, message de bienvenue" {...a11yProps(0)} />
+          <Tab label="Projet Péda, Son et Film" {...a11yProps(1)} />
 
+          <Tab label="Notifications" {...a11yProps(2)} />
           <Tab label="Utilisateurs" {...a11yProps(3)} />
-          <Tab label="Notifications" {...a11yProps(4)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
-        En cours de création
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <Histoire />
       </TabPanel>
 
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={1}>
         <Downloadables />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <Notifications />
       </TabPanel>
       <TabPanel value={value} index={3}>
         <Users />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        En cours de création....
       </TabPanel>
     </Box>
   );
