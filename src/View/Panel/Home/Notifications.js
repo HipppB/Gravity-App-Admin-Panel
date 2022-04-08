@@ -80,7 +80,7 @@ function NotificationItem() {
 function CreateNotificationModal() {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+    <Dialog open={false} onClose={() => setIsOpen(false)}>
       <DialogTitle>Création d'une notification</DialogTitle>
     </Dialog>
   );

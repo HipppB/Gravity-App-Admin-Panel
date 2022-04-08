@@ -1,7 +1,7 @@
 import React, { useEect, useState } from "react";
 
 function useFetch() {
-  const API = "https://dev.liste-gravity.fr/";
+  const API = "https://api.liste-gravity.fr/";
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);

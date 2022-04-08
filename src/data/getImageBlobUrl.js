@@ -9,7 +9,7 @@ async function getImageBlobUrl(imagePath, apiToken, callback) {
       },
     };
     const response = await fetch(
-      "https://dev.liste-gravity.fr/static/image/" + imagePath,
+      "https://api.liste-gravity.fr/static/image/" + imagePath,
       options
     );
 
