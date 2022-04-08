@@ -83,6 +83,15 @@ function Challenges(props) {
   return (
     <>
       <h3>Créez et supprimez les challenges de l'app</h3>
+      <h6>
+        Pour des raisons techniques vous ne pouvez pas supprimer des challenges,
+        contactez un membre du pole tech pour faire ça
+        <br />
+        On est réactif, promis. Pour que ça aille vite dites nous si il faut
+        transferer les submissions des utilisateurs sur un autre challenge ou
+        les supprimer !
+      </h6>
+
       <div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -115,6 +124,7 @@ function Challenges(props) {
                     <SvgIcon component={LanguageIcon} />
                   </IconButton>
                 </TableCell>
+                <TableCell align="center">Type de réponse</TableCell>
                 <TableCell align="center">
                   Date de fin (Spéciaux)
                   <br />
@@ -151,6 +161,7 @@ function Challenges(props) {
 }
 
 function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
+  const data = new Date(challenge?.expiredAt);
   return (
     <TableRow
 
@@ -177,7 +188,10 @@ function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
         {challenge?.translation[activeLang]?.rewards}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {challenge?.expiredAt}
+        {challenge?.submissionType}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {data.toLocaleDateString()} {data.toLocaleTimeString()}
       </TableCell>
 
       <TableCell align="center">
