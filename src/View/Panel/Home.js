@@ -12,7 +12,7 @@ import Users from "./Home/Users";
 import "./styleHome.css";
 import Downloadables from "./Home/Downloadables";
 import Notifications from "./Home/Notifications";
-
+import Members from "./Home/Members";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -67,7 +67,7 @@ function Home() {
           <Tab label="Projet Péda, Son et Film" {...a11yProps(1)} />
 
           <Tab label="Notifications" {...a11yProps(2)} />
-          <Tab label="Utilisateurs" {...a11yProps(3)} />
+          <Tab label="Membres" {...a11yProps(3)} />
         </Tabs>
       </Box>
 
@@ -82,7 +82,7 @@ function Home() {
         <Notifications />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Users />
+        <Members />
       </TabPanel>
     </Box>
   );
