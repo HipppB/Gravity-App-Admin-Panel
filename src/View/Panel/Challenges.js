@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { useNavigate, Outlet } from "react-router-dom";
 
 import FormControlLabel from "@mui/material/FormControlLabel";
 
@@ -79,6 +80,7 @@ function Challenges(props) {
     setChallengeInEdit(challenge);
     setIsEditOpen(true);
   }
+  let navigate = useNavigate();
 
   return (
     <>
@@ -130,7 +132,7 @@ function Challenges(props) {
                   <br />
                   Date de début (Normaux)
                 </TableCell>
-                <TableCell align="center">Modifier</TableCell>
+                <TableCell align="center">Voir les submissions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,6 +154,13 @@ function Challenges(props) {
       >
         Créer un défi
       </Button>
+      {/* <Button
+        variant="contained"
+        style={{ marginTop: 20 }}
+        onClick={() => navigate("subs")}
+      >
+        Voir les submissions
+      </Button> */}
       <CreateChallengeDialog
         isOpen={isCreateOpen}
         setIsOpen={setIsCreateOpen}
@@ -162,6 +171,8 @@ function Challenges(props) {
 
 function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
   const data = new Date(challenge?.expiredAt);
+  let navigate = useNavigate();
+
   return (
     <TableRow
 
@@ -197,10 +208,11 @@ function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
       <TableCell align="center">
         <IconButton
           onClick={() => {
-            modifyCallBack(challenge.id);
+            // modifyCallBack(challenge.id);
+            navigate("/Challenges/subs", { state: { challenge: challenge } });
           }}
         >
-          <SvgIcon component={EditIcon} color="info" />
+          <SvgIcon component={VisibilityIcon} color="info" />
         </IconButton>
       </TableCell>
     </TableRow>

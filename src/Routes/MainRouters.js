@@ -8,6 +8,7 @@ import Restaurants from "../View/Panel/Restaurants";
 import Calendar from "../View/Panel/Calendar";
 import Sponsors from "../View/Panel/Sponsors";
 import Challenges from "../View/Panel/Challenges";
+import ChallengesSub from "../View/Panel/ChallengesSub";
 function MainRouters(props) {
   const { isAuthentificated } = useAuthentification();
   return (
@@ -30,6 +31,7 @@ function MainRouters(props) {
             <Route index element={<Home />} />
             <Route path="Restaurants" element={<Restaurants />} />
             <Route path="Challenges" element={<Challenges />} />
+            <Route path="Challenges/subs" element={<ChallengesSub />} />
             <Route path="Calendar" element={<Calendar />} />
             <Route path="Sponsors" element={<Sponsors />} />
           </Route>
