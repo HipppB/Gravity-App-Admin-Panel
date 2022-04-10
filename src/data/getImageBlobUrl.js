@@ -15,6 +15,7 @@ async function getImageBlobUrl(imagePath, apiToken, callback) {
 
     const blob = await response.blob();
     const imageObjectURL = URL.createObjectURL(blob);
+
     callback(imageObjectURL);
   }
 }
