@@ -9,6 +9,7 @@ import Calendar from "../View/Panel/Calendar";
 import Sponsors from "../View/Panel/Sponsors";
 import Challenges from "../View/Panel/Challenges";
 import ChallengesSub from "../View/Panel/ChallengesSub";
+import ChallengesSubId from "../View/Panel/ChallengesSubId";
 function MainRouters(props) {
   const { isAuthentificated } = useAuthentification();
   return (
@@ -32,6 +33,7 @@ function MainRouters(props) {
             <Route path="Restaurants" element={<Restaurants />} />
             <Route path="Challenges" element={<Challenges />} />
             <Route path="Challenges/subs" element={<ChallengesSub />} />
+            <Route path="Challenges/subs/:id" element={<ChallengesSubId />} />
             <Route path="Calendar" element={<Calendar />} />
             <Route path="Sponsors" element={<Sponsors />} />
           </Route>
