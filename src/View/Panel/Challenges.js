@@ -132,7 +132,16 @@ function Challenges(props) {
                   <br />
                   Date de début (Normaux)
                 </TableCell>
-                <TableCell align="center">Voir les submissions</TableCell>
+                <TableCell align="center">
+                  Voir les submissions
+                  <br />
+                  En vrac
+                </TableCell>
+                <TableCell align="center">
+                  Voir les submissions
+                  <br />
+                  Par user
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -142,6 +151,7 @@ function Challenges(props) {
                   challenge={challenge}
                   activeLang={activeLang}
                 />
+                // <></>
               ))}
             </TableBody>
           </Table>
@@ -186,17 +196,17 @@ function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
         {challenge?.type}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {challenge?.translation[activeLang]?.title}
+        {/* {challenge?.translation[activeLang]?.title} */}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {challenge?.translation[activeLang]?.subtitle}
+        {/* {challenge?.translation[activeLang]?.subtitle} */}
       </TableCell>
 
       <TableCell align="center" component="th" scope="row">
-        {challenge?.translation[activeLang]?.description}
+        {/* {challenge?.translation[activeLang]?.description} */}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {challenge?.translation[activeLang]?.rewards}
+        {/* {challenge?.translation[activeLang]?.rewards} */}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
         {challenge?.submissionType}
@@ -210,6 +220,16 @@ function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
           onClick={() => {
             // modifyCallBack(challenge.id);
             navigate("/Challenges/subs", { state: { challenge: challenge } });
+          }}
+        >
+          <SvgIcon component={VisibilityIcon} color="info" />
+        </IconButton>
+      </TableCell>
+      <TableCell align="center">
+        <IconButton
+          onClick={() => {
+            // modifyCallBack(challenge.id);
+            navigate("/Challenges/subs/" + challenge?.id);
           }}
         >
           <SvgIcon component={VisibilityIcon} color="info" />
