@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,26 +6,23 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Alert } from "@mui/material";
 import useFetch from "../../../hooks/useFetch";
 import { useAuthentification } from "../../../Context/AuthContext";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
+
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+
 import DialogTitle from "@mui/material/DialogTitle";
-import { Icon, SvgIcon, IconButton, Avatar, Paper, Stack } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { NearMeDisabled } from "@mui/icons-material";
+
 import getImagePath from "../../../data/getImagePath";
-import getImageBlobUrl from "../../../data/getImageBlobUrl";
+
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 const Input = styled("input")({
   display: "none",

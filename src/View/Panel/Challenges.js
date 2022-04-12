@@ -285,7 +285,7 @@ function CreateChallengeDialog({ isOpen, setIsOpen }) {
         title: nameFr,
         expiredAt: dateValue,
         imageUri: filename,
-        type: isSpecial ? "special" : "normal",
+        type: "normal",
         submissionType: acceptsImage
           ? acceptsText
             ? "mixed"
