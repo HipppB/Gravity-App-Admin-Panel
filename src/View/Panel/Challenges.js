@@ -196,17 +196,17 @@ function ChallengeLine({ challenge, modifyCallBack, activeLang }) {
         {challenge?.type}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {/* {challenge?.translation[activeLang]?.title} */}
+        {challenge?.translation[activeLang]?.title}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {/* {challenge?.translation[activeLang]?.subtitle} */}
+        {challenge?.translation[activeLang]?.subtitle}
       </TableCell>
 
       <TableCell align="center" component="th" scope="row">
-        {/* {challenge?.translation[activeLang]?.description} */}
+        {challenge?.translation[activeLang]?.description}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {/* {challenge?.translation[activeLang]?.rewards} */}
+        {challenge?.translation[activeLang]?.rewards}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
         {challenge?.submissionType}
