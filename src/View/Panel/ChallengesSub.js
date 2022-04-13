@@ -83,15 +83,15 @@ function ChallengesSub(props) {
 function Submission({ sub }) {
   const { apiToken } = useAuthentification();
   const [imgUri, setImgUri] = useState();
-
+  console.log(sub);
   useEffect(() => {
-    console.log("hey", sub);
     getImageBlobUrl(sub?.content, apiToken, setImgUri);
   }, []);
   useEffect(() => console.log(imgUri), [imgUri]);
   return (
-    <div style={{ margin: 20 }}>
-      <img src={imgUri} style={{ width: 200, height: 200 }} loading="lazy" />
+    <div style={{ margin: 20, flexDirection: "column", display: "flex" }}>
+      sub n°{sub.id} sharable : {sub?.acceptToShareImage.toString()}
+      <img src={imgUri} style={{ width: 200 }} loading="lazy" />
     </div>
   );
 }
