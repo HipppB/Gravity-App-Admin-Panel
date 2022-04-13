@@ -197,9 +197,9 @@ function ParticipantSubmission({ participant, isProcessing }) {
         "challenge/admin/add_points",
         "POST",
         {
-          userId: toString(participant?.id),
+          userId: participant?.id.toString(),
           value: parseInt(nbPoint),
-          challengeId: toString(id),
+          challengeId: id.toString(),
           context: contextText,
         },
         apiToken
