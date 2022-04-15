@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+<p align="center">
+<img src="https://github.com/HipppB/Gravity-App-Mobile-App/blob/master/src/assets/images/logos/Couleur/Logo.png" style="width: 300px; heigth: 300px"/>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Gravity Admin panel
 
-## Available Scripts
+## 🪐 The project
 
-In the project directory, you can run:
+This app was developed to connect with students during the week of election of the BDE of ISEP school 2022.
+This repository is the code of the admin Panel, which control every feature of the app.
+The features needed were : 
+- Global Stuff
+ - Register and Login with school mail
+ - Personnalisable profiles
+ - Chat with the persons of the list
+ - Add / Remove buttons in the app
+ - Change text in the app
+- Events
+ - Display of incoming events
+ - registration
+ - List of registrated persons
+- Sponsors
+ - List of sponsors
+ - Contact Buttons
+ - Restaurants on a map
+- Challenges
+ - Send text/Images
+ - Status management
+ - Rank system
+- Make people Feel The Gravity 💙🧡
 
-### `npm start`
+## GitHub repositories
+- Server : https://github.com/Artcann/Gravity-Back (Nest JS)
+- Back office : https://github.com/HipppB/Gravity-App-Admin-Panel (React JS)
+- Mobile app : https://github.com/HipppB/Gravity-App-Mobile-App (React Native)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 How to use
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Install packages with `npm install`.
+- Execute in dev mode with `npm start`
+- Build the code with `npm run build`
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📝 Notes
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Due to time limitation some features of the panel are not finished
